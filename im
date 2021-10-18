@@ -1,0 +1,28 @@
+im = function(a,...){
+#-displays a matrix as an image
+#-extra arguments: 
+#--min (specifies a lowest value for colorScale), 
+#--max (specifies a highest value for colorScale), 
+#--COL (specifies a color scale), 
+#--keepPar(is there is already a defined Par layout, this will keep it from being reset), 
+#--showScale (displays the colorscale to the side of the image)
+
+Min = min(a)
+Max = max(a)
+COL = colorList$BW #Grayscale chosen by default
+
+
+z=list(...)
+if(is.null(z$keepPar)){par(mfrow=c(1,1),mar=c(0,0,0,0))} #keepPar will display image in current layout. otherwise, graphics window is reset
+if(!is.null(z$min)){Min = z$min;}
+if(!is.null(z$max)){Max = z$max;}
+if(!is.null(z$COL)){COL = z$COL;} #if col argument is found, use that colorScale
+if(!is.null(z$showScale)){layoutMatrix = matrix(1,10,15);layoutMatrix[,15] = 2;par(mar=c(0,0,0,0));layout(layoutMatrix);b = 1:length(COL);}#if you want to see the colorScale, this will print it to the side of the image
+
+
+image(t(a)[1:dim(a)[2],dim(a)[1]:1],col=COL,xaxt='n',yaxt='n',zlim=c(Min,Max)) #display the image
+
+if(!is.null(z$showScale)){image(t(b),col=COL,yaxt='n')} #display the colorScale if chosen
+if(is.null(z$keepPar)){par(mar=c(4,4,3,3),mfrow=c(1,1))} #reset the graphics window unless keepPar was given
+
+}
